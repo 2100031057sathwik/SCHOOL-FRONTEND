@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Styles/Academic.css';
-
+import Navbar from './Navbar'; // Import the Navbar component
 const Academic = () => {
   return (
     <div className="academic-page">

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3041', // Update with your backend server URL
+  baseURL: 'https://school-backend-mhht.onrender.com', // Update with your backend server URL
   withCredentials: true,
 });
 

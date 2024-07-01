@@ -1,6 +1,6 @@
 // components/AdminLogin.js
 import React from 'react';
-
+import Navbar from './Navbar'; // Import the Navbar component
 const AdminLogin = () => {
   const handleDeletePicture = () => {
     // Logic to delete a picture
