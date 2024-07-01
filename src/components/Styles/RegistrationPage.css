@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-image: url('https://images.unsplash.com/photo-1497493292307-31c376b6e479?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGJhY2tncm91bmR8ZW58MHx8fHwxNjQyNTUxNzMz&ixlib=rb-1.2.1&q=80&w=1080'); /* Replace with your chosen image URL */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  display: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.registration {
+  background-color: rgba(255, 255, 255, 0.9); /* Adding some transparency to make the text more readable */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.registration-form {
+  display: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.registration-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.registration-form form {
+  width: 100%;
+}
+
+.registration-form label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.registration-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.registration-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.registration-form button:hover {
+  background-color: #0056b3;
+}
+
+.registration-form p {
+  margin-top: 20px;
+  text-align: center;
+  color: #333;
+}
