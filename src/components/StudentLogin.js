@@ -1,14 +1,16 @@
-// StudentLoginPage.jsx
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Styles/StudentLogin.css'; // Import the CSS file
+import debounce from 'lodash.debounce'; // Add lodash.debounce
 
 const StudentLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
+
+  const debouncedSetEmail = debounce(setEmail, 300);
+  const debouncedSetPassword = debounce(setPassword, 300);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,12 +44,12 @@ const StudentLoginPage = () => {
     <div className="login">
       <div className="login-form">
         <h2>Student Login</h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" required onChange={e => setEmail(e.target.value)} /><br />
+          <input type="email" id="email" name="email" required onChange={e => debouncedSetEmail(e.target.value)} /><br />
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" required onChange={e => setPassword(e.target.value)} /><br />
-          <button type="submit" className="login-button" onClick={handleLogin}>Login</button>
+          <input type="password" id="password" name="password" required onChange={e => debouncedSetPassword(e.target.value)} /><br />
+          <button type="submit" className="login-button">Login</button>
         </form>
         {loginError && <p className="error-message">{loginError}</p>}
         <p>Don't have an account? <Link to="/register">Register here</Link></p>
