@@ -1,38 +1,47 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Styles/FeeDetails.css';
 
 const FeeDetails = () => {
   const [excelData, setExcelData] = useState([]);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState({ type: 'name', value: '' });
-  const navigate = useNavigate();
-
-  axios.defaults.withCredentials = true;
-  const apiUrl = process.env.REACT_APP_API_URL || 'https://school-backend-mhht.onrender.com';
+  const [searchType, setSearchType] = useState('name');
+  const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const fetchData = useCallback(async (params = {}) => {
     try {
-      const response = await axios.get(`${apiUrl}/student/search`, { params });
+      const response = await axios.get('https://school-backend-mhht.onrender.com/student/search', { params });
       setExcelData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       setError('Error fetching data');
     }
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
-    fetchData();
+    const fetchDataAndSetExcelData = async () => {
+      await fetchData();
+    };
+
+    fetchDataAndSetExcelData();
   }, [fetchData]);
 
   const handleSearch = () => {
-    const params = { [search.type]: search.value };
+    const params = {
+      [searchType.toLowerCase()]: searchValue
+    };
     fetchData(params);
   };
 
-  const handleGoHome = () => navigate('/');
-  const handleGoGallery = () => navigate('/gallery');
+  const handleGoHome = () => {
+    navigate('/'); // Navigate to the home page
+  };
+
+  const handleGoGallery = () => {
+    navigate('/gallery'); // Navigate to the gallery page
+  };
 
   return (
     <div className="container">
@@ -50,8 +59,8 @@ const FeeDetails = () => {
           <label htmlFor="searchType">Search By:</label>
           <select
             id="searchType"
-            value={search.type}
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value.toLowerCase())}
           >
             <option value="name">Name</option>
             <option value="class">Class</option>
@@ -60,9 +69,9 @@ const FeeDetails = () => {
           </select>
           <input
             type="text"
-            value={search.value}
-            onChange={(e) => setSearch({ ...search, value: e.target.value })}
-            placeholder={`Enter ${search.type}`}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder={`Enter ${searchType}`} // Corrected line
           />
           <button onClick={handleSearch}>Search</button>
         </div>
@@ -95,6 +104,7 @@ const FeeDetails = () => {
                 <td>{row['PH.NO']}</td>
                 <td>{row['S.FEE']}</td>
                 <td>{row['O.DUE']}</td>
+                
                 {/* Render more table cells for additional data */}
               </tr>
             ))}

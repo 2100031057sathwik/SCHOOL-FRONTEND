@@ -4,51 +4,55 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Styles/RegistrationPage.css';
 
 const RegistrationPage = () => {
-  const [formData, setFormData] = useState({ email: '', name: '', password: '', confirmPassword: '' });
-  const [error, setError] = useState({ password: '', registration: '' });
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [registrationError, setRegistrationError] = useState('');
+  const [registrationMessage, setRegistrationMessage] = useState('');
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const { email, name, password, confirmPassword } = formData;
-    setError({ password: '', registration: '' });
-    setMessage('');
+    // Reset previous error messages
+    setPasswordError('');
+    setRegistrationError('');
+    setRegistrationMessage('');
 
+    // Check password requirements
     if (password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      setError({ ...error, password: 'Password must be at least 8 characters long and contain at least one special character.' });
+      setPasswordError('Password must be at least 8 characters long and contain at least one special character.');
       return;
     }
 
+    // Check if passwords match
     if (password !== confirmPassword) {
-      setError({ ...error, password: 'Passwords do not match.' });
+      setPasswordError('Passwords do not match.');
       return;
     }
 
     try {
-      const emailResponse = await axios.get(`/user/check-email?email=${email}`);
+      // Check if email already exists
+      const emailResponse = await axios.get(`https://school-backend-mhht.onrender.com/user/check-email?email=${email}`);
       if (emailResponse.data.exists) {
-        setError({ ...error, registration: 'Email already exists. Please use a different email.' });
+        setRegistrationError('Email already exists. Please use a different email.');
         return;
       }
 
-      await axios.post("/user/register", { email, name, password });
-      setMessage('You have been registered successfully! Redirecting to login page...');
+      // Register user
+      await axios.post("https://school-backend-mhht.onrender.com/user/register", { email, name, password });
+      setRegistrationMessage('You have been registered successfully! Redirecting to login page...');
       setTimeout(() => {
         navigate('/login/student');
       }, 3000);
 
     } catch (error) {
       console.error('Error during registration:', error);
-      setError({ ...error, registration: 'Registration failed. Please try again.' });
+      setRegistrationError('Registration failed. Please try again.');
     }
   };
 
@@ -59,18 +63,18 @@ const RegistrationPage = () => {
           <h2>Registration</h2>
           <form onSubmit={handleRegister}>
             <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" required value={formData.email} onChange={handleInputChange} /><br />
+            <input type="email" id="email" name="email" required value={email} onChange={e => setEmail(e.target.value)} /><br />
             <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name" required value={formData.name} onChange={handleInputChange} /><br />
+            <input type="text" id="name" name="name" required value={name} onChange={e => setName(e.target.value)} /><br />
             <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" required value={formData.password} onChange={handleInputChange} /><br />
+            <input type="password" id="password" name="password" required value={password} onChange={e => setPassword(e.target.value)} /><br />
             <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required value={formData.confirmPassword} onChange={handleInputChange} /><br />
+            <input type="password" id="confirmPassword" name="confirmPassword" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} /><br />
             <button type="submit" className="register-button">Register</button>
           </form>
-          {error.password && <p className="error-message">{error.password}</p>}
-          {error.registration && <p className="error-message">{error.registration}</p>}
-          {message && <p className="registration-success">{message}</p>}
+          {passwordError && <p className="error-message">{passwordError}</p>}
+          {registrationError && <p className="error-message">{registrationError}</p>}
+          {registrationMessage && <p className="registration-success">{registrationMessage}</p>}
           <p>Already registered? <Link to="/login/student">Login as Student</Link></p>
         </div>
       </div>
